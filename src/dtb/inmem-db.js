@@ -59,9 +59,20 @@ const database = {
             // met het toegevoegde item als argument, of null als er een fout is opgetreden
             callback(null, item)
         }, 1500)
-    }
+    },
 
     // Voeg zelf de overige database functionaliteit toe
+    deleteById(id, callback) {
+        // Simuleer een asynchrone operatie
+        setTimeout(() => {
+            if (id < 0 || id >= this._data.length) {
+                callback({ message: `Error: id ${id} does not exist!` }, null)
+            } else {
+                this._data.splice(id, 1)
+                callback(null, {message: "Item deleted."})
+            }
+        }, 1500)
+    }
 }
 
 module.exports = database

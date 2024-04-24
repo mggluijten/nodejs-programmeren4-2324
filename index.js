@@ -36,3 +36,13 @@ app.get('/api/users', (req, res) => {
         }
     })
 })
+
+app.post('/api/users/remove/:id', (req, res) => {
+    dtb.deleteById(req.params.name, (err, data) => {
+        if (err) {
+            res.status(500).json(err)
+        } else {
+            res.status(200).json(data)
+        }
+    })
+})

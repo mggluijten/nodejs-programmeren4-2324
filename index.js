@@ -1,15 +1,16 @@
 const express = require('express')
 const dtb = require('./src/dtb/inmem-db')
 const app = express()
+const logger = require('tracer').console()
 
 const port = process.env.PORT || 3000
 
 app.listen(port, () => {
-    console.log(`Server is running on port ${port}`)
+    logger.debug(`Running on part ${port}.`)
 })
 
 app.all('*', (req, res, next) => {
-    console.log('Request:', req.method, req.url)
+    logger.debug(`REQUEST: ${req.method} ${req.url}`)
     next()
 })
 

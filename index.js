@@ -37,12 +37,13 @@ app.get('/api/users', (req, res) => {
     })
 })
 
-app.post('/api/users/remove/:id', (req, res) => {
-    dtb.deleteById(req.params.name, (err, data) => {
+// Example: localhost:3000/api/users/remove?id=1
+app.post('/api/users/remove', (req, res) => {
+    dtb.deleteById(req.query.id, (err, data) => {
         if (err) {
-            res.status(500).json(err)
+            res.status(500).json(err);
         } else {
-            res.status(200).json(data)
+            res.status(200).json(data);
         }
-    })
-})
+    });
+});

@@ -10,7 +10,7 @@ app.listen(port, () => {
 })
 
 app.all('*', (req, res, next) => {
-    logger.debug(`REQUEST: ${req.method} ${req.url}`)
+    logger.info(`REQUEST: ${req.method} ${req.url}`)
     next()
 })
 

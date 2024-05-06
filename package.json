@@ -23,6 +23,7 @@
         "tabWidth": 4
     },
     "dependencies": {
+        "chai": "^5.1.0",
         "express": "^4.19.2"
     },
     "devDependencies": {

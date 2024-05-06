@@ -23,6 +23,7 @@ let userController = {
 
     getAll: (req, res, next) => {
         userService.getAll((error, success) => {
+            console.log('Controller Data:', success.data);  // Logging to check data integrity
             if (error) {
                 return next({
                     status: error.status,
@@ -34,11 +35,13 @@ let userController = {
                 res.status(200).json({
                     status: 200,
                     message: success.message,
-                    data: success.data
+                    data: success.data  // This should be the full user data
                 });
             }
         });
     },
+    
+    
 
     getById: (req, res, next) => {
         const userId = parseInt(req.params.userId);

@@ -1,8 +1,6 @@
-// test/userController.test.js
-
 const chai = require('chai');
 const chaiHttp = require('chai-http');
-const app = require('../index'); // Assuming your Express app is exported from app.js
+const app = require('../index'); // Make sure this path points to the file where app is exported
 const expect = chai.expect;
 
 chai.use(chaiHttp);

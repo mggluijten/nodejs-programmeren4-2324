@@ -1,7 +1,11 @@
 const express = require('express')
-const dtb = require('./src/dtb/inmem-db')
+const userRoutes = require('./src/routes/user.routes')
+
 const app = express()
 const logger = require('tracer').console()
+
+// express.json zorgt dat we de body van een request kunnen lezen
+app.use(express.json())
 
 const port = process.env.PORT || 3000
 
@@ -27,23 +31,30 @@ app.get('/api/info', (req, res) => {
     res.json(info)
 })
 
-app.get('/api/users', (req, res) => {
-    dtb.getAll((err, data) => {
-        if (err) {
-            res.status(500).json(err)
-        } else {
-            res.status(200).json(data)
-        }
+// Hier komen alle routes
+app.use(userRoutes)
+
+// Hier komt de route error handler te staan!
+app.use((req, res, next) => {
+    next({
+        status: 404,
+        message: 'Route not found',
+        data: {}
     })
 })
 
-// Example: localhost:3000/api/users/remove?id=1
-app.post('/api/users/remove', (req, res) => {
-    dtb.deleteById(req.query.id, (err, data) => {
-        if (err) {
-            res.status(500).json(err);
-        } else {
-            res.status(200).json(data);
-        }
-    });
-});
+// Hier komt je Express error handler te staan!
+app.use((error, req, res, next) => {
+    res.status(error.status || 500).json({
+        status: error.status || 500,
+        message: error.message || 'Internal Server Error',
+        data: {}
+    })
+})
+
+app.listen(port, () => {
+    console.log(`Server is running on port ${port}`)
+})
+
+// Deze export is nodig zodat Chai de server kan opstarten
+module.exports = app

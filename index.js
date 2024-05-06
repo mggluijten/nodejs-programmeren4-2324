@@ -3,21 +3,23 @@ const userRoutes = require('./src/routes/user.routes');
 const logger = require('tracer').console();
 
 const app = express();
-
-// express.json zorgt dat we de body van een request kunnen lezen
-app.use(express.json());
-
 const port = process.env.PORT || 3000;
 
+// Middleware to parse JSON bodies
+app.use(express.json());
+
+// Logging middleware for all requests
 app.all('*', (req, res, next) => {
     logger.info(`REQUEST: ${req.method} ${req.url}`);
     next();
 });
 
-app.get('/', function (req, res) {
+// Root route
+app.get('/', (req, res) => {
     res.json({ message: 'Hello World' });
 });
 
+// API information route
 app.get('/api/info', (req, res) => {
     const info = {
         name: 'My Nodejs Express server',
@@ -27,10 +29,10 @@ app.get('/api/info', (req, res) => {
     res.json(info);
 });
 
-// Hier komen alle routes
+// User routes
 app.use(userRoutes);
 
-// Hier komt de route error handler te staan!
+// Catch 404 and forward to error handler
 app.use((req, res, next) => {
     next({
         status: 404,
@@ -39,16 +41,17 @@ app.use((req, res, next) => {
     });
 });
 
-// Hier komt je Express error handler te staan!
+// Error handling middleware
 app.use((error, req, res, next) => {
-    res.status(error.status || 500).json({
-        status: error.status || 500,
+    const status = error.status || 500;
+    res.status(status).json({
+        status,
         message: error.message || 'Internal Server Error',
         data: {}
     });
 });
 
-// Only one app.listen() should be present
+// Start the server
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
